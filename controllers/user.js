@@ -10,8 +10,6 @@ export const signup = async (req, res, next) => {
         if (error) {
             return res.status(422).json(error);
         }
-
-
         // encrypt user password
         const hashedPassword = bcrypt.hashSync(value.password, 10);
 
