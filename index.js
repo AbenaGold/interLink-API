@@ -5,11 +5,20 @@ import MongoStore from "connect-mongo";
 import userRouter from "./routes/user.js";
 import itemRouter from "./routes/lost.js";
 import cors from "cors";
+import mongoose from "mongoose";
 import expressOasGenerator from "express-oas-generator"
 
 
 // Create an app
 const app = express();
+
+expressOasGenerator.handleResponses(app, {
+    alwaysServeDocs: true,
+    tags: [ "User", "item" ],
+    mongooseModels: mongoose.modelNames(), 
+})
+
+
 // expressOasGenerator.handleRequests(app,{
 //     alwaysServeDocs: true,
 //     tags: ["User", "lost"],
@@ -20,7 +29,7 @@ dbconnection();
 
 // use middlewares
 app.use(express.json());
-app.use(cors({credentials:true, origin: '*'}));
+app.use(cors({credentials: true, origin: '*'}));
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -36,8 +45,8 @@ app.use(session({
 app.use(userRouter);
 app.use(itemRouter);
 
-// expressOasGenerator.handleRequests();
-// app.use((req, res) => res.redirect('/api-docs/'));
+expressOasGenerator.handleRequests();
+app.use((req, res) => res.redirect('/api-docs/'));
 
 
 // Listen for incoming request

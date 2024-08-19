@@ -11,7 +11,7 @@ import { itemValidator } from "../validators/lost.js";
 export const getitems = async (req, res, next) => {
     try {
         const allitems = await itemModel.find()
-        .populate('postedBy', 'firstName')
+        .populate('postedBy', 'userName')
         // Return response
         res.status(200).json(allitems)
     } catch (error) {
