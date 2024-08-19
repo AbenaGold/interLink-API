@@ -10,11 +10,11 @@ import expressOasGenerator from "express-oas-generator"
 
 // Create an app
 const app = express();
-expressOasGenerator.handleRequests(app,{
-    alwaysServeDocs: true,
-    tags: ["User", "lost"],
-    mongooseModules: mongoose.moduleNames(),
-})
+// expressOasGenerator.handleRequests(app,{
+//     alwaysServeDocs: true,
+//     tags: ["User", "lost"],
+//     mongooseModules: mongoose.moduleNames(),
+// })
 
 dbconnection();
 
@@ -35,8 +35,9 @@ app.use(session({
 // use routes
 app.use(userRouter);
 app.use(itemRouter);
-expressOasGenerator.handleRequests();
-app.use((req, res) => res.redirect('/api-docs/'))
+
+// expressOasGenerator.handleRequests();
+// app.use((req, res) => res.redirect('/api-docs/'));
 
 
 // Listen for incoming request

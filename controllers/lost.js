@@ -8,10 +8,10 @@ import { itemValidator } from "../validators/lost.js";
 
 
 //  Get All lost items
-export const getlostitems = async (req, res, next) => {
+export const getitems = async (req, res, next) => {
     try {
         const allitems = await itemModel.find()
-        .populate('postedBy', 'userName')
+        .populate('postedBy', 'firstName')
         // Return response
         res.status(200).json(allitems)
     } catch (error) {
@@ -32,7 +32,7 @@ export const getitem = async (req, res, next) => {
 
 
 //Add a lost item
-export const postlostitem = async (req, res, next) => {
+export const postitem = async (req, res, next) => {
     try {
         // validate request
         const { value, error } = itemValidator.validate(req.body);
@@ -40,15 +40,13 @@ export const postlostitem = async (req, res, next) => {
             return res.status(422).json(error);
         }
         // post item
-        const lostitem = await itemModel.create({
+        const posteditem = await itemModel.create({
             ...req.body,
             image: req.file.filename,
-            // when referencing a user's profile
-            // postedBy: profile.id
             postedBy: req.session.user.id
         });
         // return Response
-        res.status(201).json(lostitem)
+        res.status(201).json(posteditem)
 
     } catch (error) {
         next(error)
@@ -74,7 +72,7 @@ export const updateitem = async (req, res, next) => {
 export const deleteitem = async (req, res, next) => {
     try {
         const deleteditem = await itemModel.findByIdAndDelete(req.params.id)
-        res.status(200).json(deletedContact)
+        res.status(200).json(deleteditem)
     } catch (error) {
         next(error)
     }
